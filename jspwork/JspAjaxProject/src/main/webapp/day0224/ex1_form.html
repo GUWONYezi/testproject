@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<script src="https://code.jquery.com/jquery-3.6.3.js"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Stylish&family=Sunflower&display=swap" rel="stylesheet">
+
+</head>
+<body>
+	<h3>폼태그에 데이터 입력후 jsp로 보내기</h3>
+	이름:<input type="text" id="name"><br>
+	핸드폰:<input type="text" id="hp"><br>
+	<button type="button" id="btn1">ajax로 서버에 보내기 #1</button>
+	<button type="button" id="btn2">ajax로 서버에 보내기 #2</button>
+	<hr>
+	<div id="show"></div>
+	
+	<script>
+		$("#btn1").click(function(){
+			//입력한 값들을 읽는다
+			var name=$("#name").val();
+			var hp=$("#hp").val();
+			
+			var data="name="+name+"&hp="+hp; //방법1
+			
+			//alert(data);
+			
+			//ajax함수를 통해서 백엔드로 데이터를 보낸다
+			$.ajax({
+				type:"get",
+				url:"ex1_read1.jsp",
+				data:data,
+				success:function(res){
+					$("#show").html("<h4 class='alert alert-info'>"+data+"</h4>");
+				},
+				statusCode:{
+					400:function(){
+						alert("json파일이 없어요");
+					},
+					500:function(){
+						alert("서버오류...코드를 다시 한 번 보실 것!");
+					}
+				}
+			});
+		});
+		
+		$("#btn2").click(function(){
+			//입력한 값 읽기
+			var name=$("#name").val();
+			var hp=$("#hp").val();
+			
+			$.ajax({
+				type:"get",
+				url:"ex1_read2.jsp",
+				dataType:"xml",
+				data:{"name":name,"hp":hp}, //방법2(xml방식)
+				success:function(res){
+					var s="<h2>"+$(res).text()+"님 데이터를 db에 추가했어요</h2>";
+					$("#show").html(s);
+				}
+			});
+		});
+	</script>
+</body>
+</html>
+
+
+
+
+
+
