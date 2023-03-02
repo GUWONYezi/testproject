@@ -30,7 +30,7 @@
 	div.menu{
 		width: 100%;
 		height: 80px;
-		font-size: 20px;
+		font-size: 30px;
 		top: 150px;
 		text-align: center;
 	}
@@ -39,7 +39,7 @@
 		width: 170px;
 		height: 200px;
 		font-size: 15pt;
-		top: 280px;
+		top: 380px;
 		border: 1px solid gray;
 		border-radius: 20px;
 		left: 50px;
@@ -50,7 +50,7 @@
 		width: 1200px;
 		height: 800px;
 		font-size: 12pt;
-		top: 280px;
+		top: 380px;
 		left: 250px;
 		padding: 30px;
 		margin-left: 50px;

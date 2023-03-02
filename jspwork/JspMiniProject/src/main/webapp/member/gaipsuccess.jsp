@@ -30,9 +30,9 @@
 	<b><%=name %>님의 회원가입을 축하합니다.</b>
 	<br><br>
 	<button type="button" class="btn btn-success" 
-	onclick="loaction.href='#'">로그인</button>
+	onclick="location.href='index.jsp?main=login/loginmain.jsp'">로그인</button>
 	<button type="button" class="btn btn-success" 
-	onclick="loaction.href='home'">로그인</button>
+	onclick="location.href='index.jsp'">홈</button>
 </div>
 
 </body>
