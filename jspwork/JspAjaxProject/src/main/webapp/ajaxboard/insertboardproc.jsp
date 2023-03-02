@@ -1,25 +1,28 @@
-<%@page import="meno.model.MemoDto"%>
-<%@page import="meno.model.MemoDao"%>
+<%@page import="ajaxboard.model.AjaxBoardDao"%>
+<%@page import="ajaxboard.model.AjaxBoardDto"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
+
 <%
-	MemoDao dao=new MemoDao();
 
-
-	//엔코딩
 	request.setCharacterEncoding("utf-8");
-	
-	//데이터 읽기(writer,content,avata)
+
+	//writeform에서 값 받아오기
 	String writer=request.getParameter("writer");
+	String subject=request.getParameter("subject");
 	String content=request.getParameter("content");
 	String avata=request.getParameter("avata");
 	
-	//dto로 묶어주기
-	MemoDto dto=new MemoDto();
+	//dto
+	AjaxBoardDto dto=new AjaxBoardDto();
+	
 	dto.setWriter(writer);
+	dto.setSubject(subject);
 	dto.setContent(content);
 	dto.setAvata(avata);
 	
-	//insert호출
-	dao.insertMeno(dto);
+	//insert
+	AjaxBoardDao dao=new AjaxBoardDao();
+	dao.insertAjaxBoard(dto);
+
 %>

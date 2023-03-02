@@ -1,4 +1,4 @@
-package meno.model;
+package ajaxboard.model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,24 +9,24 @@ import java.util.Vector;
 
 import mysql.db.DbConnect;
 
-public class MemoDao {
-
+public class AjaxBoardDao {
 	DbConnect db=new DbConnect();
 	
 	//insert
-	public void insertMeno(MemoDto dto)
+	public void insertAjaxBoard(AjaxBoardDto dto)
 	{
 		Connection conn=db.getConnection();
 		PreparedStatement pstmt=null;
 		
-		String sql="insert into memo values(null,?,?,?,now())";
+		String sql="insert into ajaxboard values(null,?,?,?,?,now())";
 		
 		try {
 			pstmt=conn.prepareStatement(sql);
 			
 			pstmt.setString(1, dto.getWriter());
-			pstmt.setString(2, dto.getContent());
-			pstmt.setString(3, dto.getAvata());
+			pstmt.setString(2, dto.getSubject());
+			pstmt.setString(3, dto.getContent());
+			pstmt.setString(4, dto.getAvata());
 			
 			pstmt.execute();
 			
@@ -39,15 +39,15 @@ public class MemoDao {
 	}
 	
 	//select
-	public List<MemoDto> getAllMemoDatas()
+	public List<AjaxBoardDto> getAllDatas()
 	{
-		List<MemoDto> list=new Vector();
+		List<AjaxBoardDto> list=new Vector<>();
 		
 		Connection conn=db.getConnection();
 		PreparedStatement pstmt=null;
 		ResultSet rs=null;
 		
-		String sql="select * from memo order by num desc";
+		String sql="select * from ajaxboard order by num desc";
 		
 		try {
 			pstmt=conn.prepareStatement(sql);
@@ -55,16 +55,15 @@ public class MemoDao {
 			
 			while(rs.next())
 			{
-				//while문에서 DB데이터를 읽어 dto에 넣은 후
-				MemoDto dto=new MemoDto();
+				AjaxBoardDto dto=new AjaxBoardDto();
 				
 				dto.setNum(rs.getString("num"));
 				dto.setWriter(rs.getString("writer"));
-				dto.setContent(rs.getString("content"));
+				dto.setSubject(rs.getString("subject"));
 				dto.setAvata(rs.getString("avata"));
+				dto.setContent(rs.getString("content"));
 				dto.setWriteday(rs.getTimestamp("writeday"));
 				
-				//다시 list에 추가
 				list.add(dto);
 			}
 			
@@ -75,16 +74,54 @@ public class MemoDao {
 			db.Dbclose(conn, pstmt, rs);
 		}
 		
+		
 		return list;
 	}
 	
+	//num에 해당하는 데이터 반환
+	public AjaxBoardDto getData(String num)
+	{
+		AjaxBoardDto dto=new AjaxBoardDto();
+		
+		Connection conn=db.getConnection();
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		
+		String sql="select * from ajaxboard where num=?";
+		
+		try {
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, num);
+			
+			rs=pstmt.executeQuery();
+			
+			if(rs.next())
+			{
+				dto.setNum(rs.getString("num"));
+				dto.setWriter(rs.getString("writer"));
+				dto.setSubject(rs.getString("subject"));
+				dto.setContent(rs.getString("content"));
+				dto.setAvata(rs.getString("avata"));
+				dto.setWriteday(rs.getTimestamp("writeday"));
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.Dbclose(conn, pstmt, rs);
+		}
+		
+		return dto;
+	}
+	
 	//삭제
-	public void deleteMemo(String num)
+	public void deleteAjaxBoard(String num)
 	{
 		Connection conn=db.getConnection();
 		PreparedStatement pstmt=null;
 		
-		String sql="delete from memo where num=?";
+		String sql="delete from ajaxboard where num=?";
 		
 		try {
 			pstmt=conn.prepareStatement(sql);
@@ -99,73 +136,45 @@ public class MemoDao {
 		}
 	}
 	
-	//num에 해당하는 하나의 데이터 리턴
-	public MemoDto getData(String num)
-	{
-		MemoDto dto=new MemoDto();
-		
-		Connection conn=db.getConnection();
-		PreparedStatement pstmt=null;
-		ResultSet rs=null;
-		
-		String sql="select * from memo where num=?";
-		
-		try {
-			pstmt=conn.prepareStatement(sql);
-			pstmt.setString(1, num);
-			rs=pstmt.executeQuery();
-			
-			if(rs.next())
-			{
-				dto.setNum(rs.getString("num"));
-				dto.setWriter(rs.getString("writer"));
-				dto.setContent(rs.getString("content"));
-				dto.setAvata(rs.getString("avata"));
-				dto.setWriteday(rs.getTimestamp("writeday"));
-			}
-			
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally {
-			db.Dbclose(conn, pstmt, rs);
-		}
-
-	
-		return dto;
-	}
-	
-	//update(수정)
-	public void updateMemo(MemoDto dto)
+	//수정
+	public void updateAjaxBoard(AjaxBoardDto dto)
 	{
 		Connection conn=db.getConnection();
 		PreparedStatement pstmt=null;
 		
-		String sql="update memo set writer=?,content=?,avata=? where num=?";
+		String sql="update ajaxboard set writer=?,subject=?,content=?,avata=? where num=?";
 		
 		try {
 			pstmt=conn.prepareStatement(sql);
 			
 			pstmt.setString(1, dto.getWriter());
-			pstmt.setString(2, dto.getContent());
-			pstmt.setString(3, dto.getAvata());
-			pstmt.setString(4, dto.getNum());
+			pstmt.setString(2, dto.getSubject());
+			pstmt.setString(3, dto.getContent());
+			pstmt.setString(4, dto.getAvata());
+			pstmt.setString(5, dto.getNum());
 			
 			pstmt.execute();
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally {
+		} finally {
 			db.Dbclose(conn, pstmt);
 		}
 	}
 	
 	
 	
-	
 }
+
+
+
+
+
+
+
+
+
 
 
 
