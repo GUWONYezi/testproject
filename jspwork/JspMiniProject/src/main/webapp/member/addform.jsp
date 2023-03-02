@@ -16,6 +16,33 @@
 $(function(){
 	
 	//id중복체크
+	$("#btncheck").click(function(){
+		//id읽기
+		var id=$("#id").val();
+		//alert(id);
+		
+		$.ajax({
+			type:"get",
+			url:"member/idserach.jsp",
+			dataType:"json",
+			data:{"id":id},
+			success:function(res)
+			{
+				//console.log(res.count);
+				
+				if(res.count==1){
+					//alert("이미 가입된 아이디입니다\n다시 입력해주세요");
+					$("span.idsuccess").text("가입불가");
+					$("#id").val('');
+					$("#id").focus();
+				}else{
+					//alert("가입이 가능한 아이디입니다.");
+					$("span.idsuccess").text("가입가능");
+				}
+			}
+		});
+		
+	});
 	
 	
 	//이메일
@@ -62,6 +89,7 @@ function passCheck(f)
 					<input type="text" name="id" id="id" class="form-control" 
 					required="required" style="width: 120px;">
 					<button type="button" class="btn btn-danger" id="btncheck">중복체크</button>
+					<span class="idsuccess"></span>
 				</td>
 			</tr>
 			
