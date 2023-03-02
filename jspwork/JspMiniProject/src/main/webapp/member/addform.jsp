@@ -14,6 +14,7 @@
 <script type="text/javascript">
 
 $(function(){
+	isIdOk=false;
 	
 	//id중복체크
 	$("#btncheck").click(function(){
@@ -28,20 +29,28 @@ $(function(){
 			data:{"id":id},
 			success:function(res)
 			{
-				//console.log(res.count);
+				console.log(res.count);
 				
 				if(res.count==1){
 					//alert("이미 가입된 아이디입니다\n다시 입력해주세요");
 					$("span.idsuccess").text("가입불가");
 					$("#id").val('');
 					$("#id").focus();
+					isIdOk=false;
 				}else{
 					//alert("가입이 가능한 아이디입니다.");
 					$("span.idsuccess").text("가입가능");
+					isIdOk=true;
 				}
 			}
 		});
 		
+	});
+	
+	//id란 바꾸면 중복체크 다시
+	$("#id").change(function(){
+		$("span.idsuccess").text("");
+		isIdOk=false;
 	});
 	
 	
@@ -69,6 +78,15 @@ function passCheck(f)
 		f.pass2.value="";
 		
 		//form의 action이 호출되지 않는다
+		return false;
+	}
+	
+	//아이디 중복체크 안했을 시
+	if(isIdOk==false)
+	{
+		alert("아이디 중복체크를 해주세요");
+		$("#id").focus();
+		
 		return false;
 	}
 }
