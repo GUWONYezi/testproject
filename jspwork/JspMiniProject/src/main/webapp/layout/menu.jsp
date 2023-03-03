@@ -21,6 +21,12 @@
 <%
 	//프로젝트 경로 구하기
 	String root=request.getContextPath();
+
+	//아이디
+	String myid=(String)session.getAttribute("myid");
+	
+	//로그인 상태
+	String loginok=(String)session.getAttribute("loginok");
 %>
 
 <body>
@@ -35,9 +41,16 @@
 					<li class="parent">
 						<a href="#">Member</a>
 						<ul class="sub-menu">
-							<li><a href="<%=root %>/index.jsp?main=login/loginmain.jsp">로그인</a></li>
 							<li><a href="<%=root %>/index.jsp?main=member/addform.jsp">회원가입</a></li>
-							<li><a href="<%=root %>/index.jsp?main=member/memberlist.jsp">회원목록</a></li>
+							<li><a href="<%=root %>/index.jsp?main=member/myinfo.jsp">마이정보</a></li>
+							
+							<%
+							//관리자만 멤버목록을 볼 수 있게
+							//로그인중이고 그 아이디가 관리자
+							if(loginok!=null && myid.equals("admin")){%>
+								<li><a href="<%=root %>/index.jsp?main=member/memberlist.jsp">회원목록</a></li>
+							<%
+							}%>
 						</ul>
 					</li>
 					<li class="parent">

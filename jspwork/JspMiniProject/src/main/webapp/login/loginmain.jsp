@@ -13,6 +13,18 @@
 
 </head>
 <body>
-
+	<%
+	//세션에 저장된 loginok를 읽는다
+	String loginok=(String)session.getAttribute("loginok");
+	
+	//로그아웃
+	if(loginok==null)
+	{%>
+		<jsp:include page="loginform.jsp"></jsp:include>
+	<%}else{%>
+		<jsp:include page="logoutform.jsp"></jsp:include>
+	<%}
+	
+	%>
 </body>
 </html>

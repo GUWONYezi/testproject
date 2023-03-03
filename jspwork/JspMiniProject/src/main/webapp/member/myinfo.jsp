@@ -1,6 +1,6 @@
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="java.util.List"%>
 <%@page import="data.dto.MemberDto"%>
+<%@page import="java.util.List"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="data.dao.MemberDao"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
@@ -24,75 +24,78 @@ List<MemberDto> list=dao.getAllMembers();
 
 SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 
-int no=1;
+//세션
+String loginok=(String)session.getAttribute("loginok");
+String myid=(String)session.getAttribute("myid");
+
 %>
-
-<style type="text/css">
-th{
-	text-align: center;
-}
-
-</style>
 
 <script>
 
 function delfunc(num)
 {
-	var yes=confirm("정말 강퇴처리 하시겠습니까?");
+	var yes=confirm("정말 삭제 하시겠습니까?");
 	
 	if(yes)
-		location.href='member/memberdelete.jsp?num='+num;
+	{
+		<%
+		session.removeAttribute("loginok");
+		%>
+		location.href='index.jsp';
+	}
 }
 
 </script>
 
 </head>
 <body>
-	<div>
-		<table class="table table-bordered" style="width: 900px;">
-			<tr bgcolor="#fff0f5">
-				<th width="60">번호</th>
-				<th width="80">회원명</th>
-				<th width="80">아이디</th>
-				<th width="140">핸드폰</th>
-				<th width="340">주소</th>
-				<th width="160">이메일</th>
-				<th width="130">가입일자</th>
-				<th width="160">수정/삭제</th>
-			</tr>
-			
+	<table class="table table-bordered" style="width: 500px;">
 			<%
 			for(MemberDto dto:list)
 			{%>
-				<tr align="center">
-					<td><%=no++ %></td>
+			
+			<%
+			//로그인중이면서 로그인한 아이디와 같은 사람만 보기
+			if(loginok!=null && dto.getId().equals(myid)){%>
+				<tr>
+					<th>이름</th>
 					<td><%=dto.getName() %></td>
+				</tr>
+				<tr>
+					<th>아이디</th>
 					<td><%=dto.getId() %></td>
+				</tr>
+				<tr>
+					<th>핸드폰</th>
 					<td><%=dto.getHp() %></td>
+				</tr>
+				<tr>
+					<th>주소</th>
 					<td><%=dto.getAddr() %></td>
+				</tr>
+				<tr>
+					<th>이메일</th>
 					<td><%=dto.getEmail() %></td>
+				</tr>
+				<tr>
+					<th>가입일</th>
 					<td><%=sdf.format(dto.getGaipday()) %></td>
-					<td>
-						<button type="button" class="btn btn-default" 
+				</tr>
+				<tr>
+					<td colspan="2" align="center">
+						<button type="button" class="btn btn-danger" 
 						onclick="delfunc(<%=dto.getNum()%>)">삭제</button>
+						<button type="button" class="btn btn-default" 
+						onclick="">수정</button>
 						<!-- onclick="location.href='member/memberdelete.jsp?num=<%=dto.getNum()%>'" -->
 					</td>
 				</tr>
 			<%}
+			}
 			%>
-		</table>
-	</div>
+	</table>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
 
 
 

@@ -73,7 +73,6 @@
 	String root=request.getContextPath();
 %>
 
-<%=root%>
 </body>
 
 	<div class="layout title">
