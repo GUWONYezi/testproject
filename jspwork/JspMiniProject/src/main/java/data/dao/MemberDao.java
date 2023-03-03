@@ -201,6 +201,46 @@ public class MemberDao {
 		
 		return b;
 	}
+	
+	
+	//num값에 해당하는 데이터 가져오기
+	public MemberDto getData(String num)
+	{
+		MemberDto dto=new MemberDto();
+		
+		Connection conn=db.getConnection();
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		
+		String sql="select * from member where num=?";
+		
+		try {
+			pstmt=conn.prepareStatement(sql);
+			
+			pstmt.setString(1, num);
+			rs=pstmt.executeQuery();
+			
+			if(rs.next())
+			{
+				dto.setNum(rs.getString("num"));
+				dto.setName(rs.getString("name"));
+				dto.setId(rs.getString("id"));
+				dto.setHp(rs.getString("hp"));
+				dto.setPass(rs.getString("hp"));
+				dto.setEmail(rs.getString("email"));
+				dto.setAddr(rs.getString("addr"));
+				dto.setGaipday(rs.getTimestamp("gaipday"));
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.Dbclose(conn, pstmt, rs);
+		}
+		
+		return dto;
+	}
 
 }
 
