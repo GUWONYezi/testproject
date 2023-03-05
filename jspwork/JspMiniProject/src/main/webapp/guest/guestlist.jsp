@@ -118,7 +118,8 @@ span.day{
 								//로그인한 아이디와 글을 쓴 아이디가 같을 경우에만 수정삭제 보이게...
 								if(loginok!=null && dto.getMyid().equals(myid))
 								{%>
-									| <a href="" style="color: black;">수정</a>
+									| <a href="index.jsp?main=guest/updateform.jsp?num=<%=dto.getNum() %>&currentPage=<%=currentPage %>"
+									 style="color: black;">수정</a>
 									| <a href="guest/delete.jsp?num=<%=dto.getNum() %>&currentPage=<%=currentPage %>" 
 										style="color: black;">삭제</a>
 								<%}

@@ -120,7 +120,7 @@ function passCheck(f)
 
 </head>
 <body>
-	<form action="member/addaction.jsp" method="post" class="form-inline" 
+	<form action="member/myinfoupdate.jsp" method="post" class="form-inline" 
 	onsubmit="return passCheck(this)">
 		<input type="hidden" name="num" value=<%=dto.getNum() %>>
 		<table class="table table-bordered" style="width: 500px">
@@ -197,7 +197,7 @@ function passCheck(f)
 			<tr>
 				<td colspan="2" align="center">
 					<button type="submit" class="btn btn-default" 
-					style="width: 100px">저장하기</button>
+					style="width: 100px">수정하기</button>
 					<button type="reset" class="btn btn-default" 
 					style="width: 100px">초기화</button>
 				</td>

@@ -16,8 +16,16 @@
 </head>
 <body>
 <%
-//num값 받기
+request.setCharacterEncoding("utf-8");
+
+//값 받기
 String num=request.getParameter("num");
+String id=request.getParameter("id");
+String pass=request.getParameter("pass");
+String name=request.getParameter("name");
+String hp=request.getParameter("hp");
+String addr=request.getParameter("addr");
+String email=request.getParameter("email1")+"@"+request.getParameter("email2");
 
 //dao
 MemberDao dao=new MemberDao();
@@ -26,10 +34,19 @@ MemberDao dao=new MemberDao();
 MemberDto dto=new MemberDto();
 
 //수정값 채우기
-
+dto.setNum(num);
+dto.setId(id);
+dto.setPass(pass);
+dto.setName(name);
+dto.setHp(hp);
+dto.setAddr(addr);
+dto.setEmail(email);
 
 //수정
 dao.updateMember(dto);
+
+//이동
+response.sendRedirect("../index.jsp?main=member/myinfo.jsp");
 
 %>
 </body>

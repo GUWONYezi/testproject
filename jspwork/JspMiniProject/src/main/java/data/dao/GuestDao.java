@@ -177,6 +177,32 @@ public class GuestDao {
 		return dto;
 	}
 	
+	//수정
+	public void updateGuest(GuestDto dto)
+	{
+		Connection conn=db.getConnection();
+		PreparedStatement pstmt=null;
+		
+		String sql="update guest set content=?,photoname=? where num=?";
+		
+		try {
+			pstmt=conn.prepareStatement(sql);
+			
+			pstmt.setString(1, dto.getContent());
+			pstmt.setString(2, dto.getPhotoname());
+			pstmt.setString(3, dto.getNum());
+			
+			pstmt.execute();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.Dbclose(conn, pstmt);
+		}
+		
+	}
+	
 }
 
 
