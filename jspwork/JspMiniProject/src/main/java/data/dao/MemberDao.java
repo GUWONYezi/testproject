@@ -241,6 +241,36 @@ public class MemberDao {
 		
 		return dto;
 	}
+	
+	//회원정보수정
+	public void updateMember(MemberDto dto)
+	{
+		Connection conn=db.getConnection();
+		PreparedStatement pstmt=null;
+		
+		String sql="update member set id=?,pass=?,name=?,hp=?,addr=?,email=? where num=?";
+		
+		try {
+			pstmt=conn.prepareStatement(sql);
+			
+			pstmt.setString(1, dto.getId());
+			pstmt.setString(2, dto.getPass());
+			pstmt.setString(3, dto.getName());
+			pstmt.setString(4, dto.getHp());
+			pstmt.setString(5, dto.getAddr());
+			pstmt.setString(6, dto.getEmail());
+			pstmt.setString(7, dto.getNum());
+			
+			pstmt.execute();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.Dbclose(conn, pstmt);
+		}
+		
+	}
 
 }
 

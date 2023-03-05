@@ -38,10 +38,7 @@ function delfunc(num)
 	
 	if(yes)
 	{
-		<%
-		session.removeAttribute("loginok");
-		%>
-		location.href='index.jsp';
+		location.href='member/myinfodelete.jsp?num='+num;
 	}
 }
 
@@ -86,7 +83,7 @@ function delfunc(num)
 						<button type="button" class="btn btn-danger" 
 						onclick="delfunc(<%=dto.getNum()%>)">삭제</button>
 						<button type="button" class="btn btn-default" 
-						onclick="">수정</button>
+						onclick="location.href='index.jsp?main=member/updateform.jsp?num=<%=dto.getNum()%>'">수정</button>
 						<!-- onclick="location.href='member/memberdelete.jsp?num=<%=dto.getNum()%>'" -->
 					</td>
 				</tr>
