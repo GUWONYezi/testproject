@@ -1,3 +1,4 @@
+<%@page import="java.io.File"%>
 <%@page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy"%>
 <%@page import="com.oreilly.servlet.MultipartRequest"%>
 <%@page import="data.dto.GuestDto"%>
@@ -37,24 +38,48 @@ try{
 	
 	//multi변수로 모든 폼데이터 읽어오기
 	String num=multi.getParameter("num");
-	String currentPage=multi.getParameter("currentPage");
+	String currentPage=multi.getParameter("currentPage"); //넘길 페이지 번호
 	
-	System.out.println(currentPage);
+	//System.out.println(currentPage);
 	
 	String content=multi.getParameter("content");
-	
 	String photoname=multi.getFilesystemName("photo");
+	
+	String noimg=multi.getParameter("noimg");
 	
 	//dao
 	GuestDao dao=new GuestDao();
 	
-	//사진은 수정하지 않았다면
+	//사진은 수정하지 않았다면(사진 유지)
 	if(photoname==null || photoname.equals(""))
 	{
 		//원래 photo값으로 대체
 		GuestDto photoDto=dao.getData(num);
 		photoname=photoDto.getPhotoname();
 		
+	}
+	
+	//만약 사진을 삭제했다면
+	if(noimg.equals("true"))
+	{	
+		GuestDto photoDto=dao.getData(num);
+		photoname=photoDto.getPhotoname();
+		
+		//file삭제
+		if(photoname!=null)
+		{
+			//업로드 경로 구하기
+			String uploadPath=getServletContext().getRealPath("/save");
+			//파일 생성
+			File file=new File(uploadPath+"\\"+photoname);
+			
+			//만약 파일이 존재한다면 파일 삭제
+			if(file.exists()){
+				file.delete();
+			}
+		}
+		
+		photoname=null;
 	}
 
 	//dto

@@ -37,13 +37,22 @@ System.out.println(currentPage);
 $(function(){
 	$("span.camera").click(function(){
 		$("#photo").trigger("click"); //이벤트 강제 호출
+		 $("#noimg").val(false); //이미지 등록시 이미지 삭제 버튼 누른 거 초기화
 	});
 	
 	//만약 사진이 있다면, 미리보기 띄워놓기
 	if(photo!=null)
 	{
 		$('#showimg').attr('src',"save/<%=photoname%>");
+	}else{
+		$('#showimg').attr('src',"");
 	}
+	
+	//사진을 삭제한다
+	$("#imgdel").click(function(){
+		 $('#showimg').attr('src', "");
+		 $("#noimg").val(true);
+	});
 	
 	
 });
@@ -70,8 +79,12 @@ function readURL(input) {
 		<img id="showimg" style="position: absolute; left: 800px; top: 100px; max-width: 200px;">
 		
 		<form action="guest/update.jsp" method="post" enctype="multipart/form-data">
+			<!-- 수정폼 반드시 num,currentPage도 같이 hidden으로 넘기기 -->
+			<!-- noimg=> 이미삭제 버튼을 눌렀는지 -->
 			<input type="hidden" value=<%=num %> name="num">
 			<input type="hidden" value=<%=currentPage %> name="currentPage">
+			<input type="hidden" value=<%=false %> name="noimg" id="noimg">
+			
 			<table style="width: 600px">
 				<caption>
 					<b>방명록 수정</b>
@@ -88,6 +101,12 @@ function readURL(input) {
 					<td>
 						<button type="submit" class="btn btn-default" 
 						style="width: 100px; height: 100px;">수정</button>
+					</td>
+				</tr>
+				
+				<tr>
+					<td colspan="2">
+						<button type="button" class="btn btn-default" id="imgdel">이미지 삭제</button>
 					</td>
 				</tr>
 			</table>

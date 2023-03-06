@@ -2,6 +2,7 @@
 <%@page import="data.dao.GuestDao"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
+    
 <%
 
 	//값 받아오기(num, 페이지)
@@ -11,10 +12,11 @@
 	//dao
 	GuestDao dao=new GuestDao();
 	
-	//file삭제
-	//이미지가 있다면 삭제
+	//db로부터 저장된 이미지명 얻기
 	String photoname=dao.getData(num).getPhotoname();
 	
+	//file삭제
+	//이미지가 있다면 삭제
 	if(photoname!=null)
 	{
 		//업로드 경로 구하기
