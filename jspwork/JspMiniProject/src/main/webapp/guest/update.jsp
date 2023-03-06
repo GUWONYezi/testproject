@@ -42,10 +42,20 @@ try{
 	System.out.println(currentPage);
 	
 	String content=multi.getParameter("content");
+	
 	String photoname=multi.getFilesystemName("photo");
 	
 	//dao
 	GuestDao dao=new GuestDao();
+	
+	//사진은 수정하지 않았다면
+	if(photoname==null || photoname.equals(""))
+	{
+		//원래 photo값으로 대체
+		GuestDto photoDto=dao.getData(num);
+		photoname=photoDto.getPhotoname();
+		
+	}
 
 	//dto
 	GuestDto dto=new GuestDto();
