@@ -103,6 +103,66 @@ public class AnswerDao {
 		
 	}
 	
+	//수정
+	public void updateAnswer(AnswerDto dto)
+	{
+		Connection conn=db.getConnection();
+		PreparedStatement pstmt=null;
+		
+		String sql="update answer set content=? where idx=?";
+		
+		try {
+			pstmt=conn.prepareStatement(sql);
+			
+			pstmt.setString(1, dto.getContent());
+			pstmt.setString(2, dto.getIdx());
+			
+			pstmt.execute();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.Dbclose(conn, pstmt);
+		}
+	}
+	
+	//idx에 해당하는 댓글만 가져오기
+	public AnswerDto getData(String idx)
+	{
+		AnswerDto dto=new AnswerDto();
+		
+		Connection conn=db.getConnection();
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		
+		String sql="select * from answer where idx=?";
+		
+		try {
+			pstmt=conn.prepareStatement(sql);
+			
+			pstmt.setString(1, idx);
+			rs=pstmt.executeQuery();
+			
+			if(rs.next())
+			{
+				dto.setIdx(rs.getString("idx"));
+				dto.setNum(rs.getString("num"));
+				dto.setContent(rs.getString("content"));
+				dto.setMyid(rs.getString("myid"));
+				dto.setWriteday(rs.getTimestamp("writeday"));
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.Dbclose(conn, pstmt, rs);
+		}
+		
+		return dto;
+	}
+	
 	
 }
 

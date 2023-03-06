@@ -64,10 +64,10 @@
 						<ul class="sub-menu">
 							<li><a href="<%=root %>/index.jsp?main=board/boardlist.jsp">Q&A게시판</a></li>
 							<li><a href="#">업로드게시판</a></li>
-							<li><a href="#">스마트게시판</a></li>
+							<li><a href="index.jsp?main=board/smartform.jsp">스마트게시판</a></li>
 						</ul>
 					</li>
-					<li><a href="#">Contact</a></li>
+					<li><a href="#">SHOP</a></li>
 				</ul>
 			</nav>
 			<div class="clear"></div>

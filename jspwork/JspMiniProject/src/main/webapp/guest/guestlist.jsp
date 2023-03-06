@@ -91,6 +91,8 @@ span.day{
 <script type="text/javascript">
 
 $(function(){
+	
+	//추천클릭
 	$("span.likes").click(function(){
 		var num=$(this).attr("num");
 		var tag=$(this);
@@ -155,6 +157,40 @@ $(function(){
 			}
 		});
 		
+	});
+	
+	//댓글 수정 이벤트
+	$("#answerup").click(function(){
+		var idx=$(this).attr("idx");
+		var ucontent="";
+		
+		$.ajax({
+			type:"get",
+			dataType:"json",
+			data:{"idx":idx},
+			url:"guest/answercontentget.jsp",
+			success:function(res){
+				ucontent=res.content;
+				
+				//수정폼 만들기
+				var s="";
+				s+="<form action='guest/answerupdate.jsp' method='post'>"
+				s+="<input type='hidden' name='idx' value='"+idx+"'>"
+				s+="<input type='hidden' name='currentPage' value='"+<%=currentPage %>+"'>";
+				s+="<table class='table'>";
+				s+="<tr><td>";
+				s+='<textarea style="width: 450px; height: 70px;" name="content" required="required" class="form-control">';
+				s+=ucontent;
+				s+="</textarea>";
+				s+="</td><td>"
+				s+="<button type='submit' class='btn btn-default btn-answerup' style='width: 70px; height: 70px;'>수정</button>";
+				s+="</td></tr></table>";
+				s+="</form>"
+				
+				$("#answercontent").html(s);
+				
+			}
+		});
 	});
 	
 	
@@ -290,16 +326,19 @@ $(function(){
 										</tr>
 										
 										<tr>
-											<td colspan="2" 
+											<td colspan="2" id="answercontent"
 											style="padding-left: 25px; font-size: 10pt;"><%=adto.getContent().replace("\n", "<br>") %></td>
 										</tr>
 										
 										<%
-										//현재 로그인중인 아이디와 댓글 작성자가 같으면 삭제 버튼을 보이게 한다.
+										//현재 로그인중인 아이디와 댓글 작성자가 같으면 삭제/수정 버튼을 보이게 한다.
 										if(loginok!=null && adto.getMyid().equals(myid)){%>
 											<tr align="right">
 												<td colspan="2">
 													<span class="glyphicon glyphicon-trash" idx="<%=adto.getIdx()%>" id="answerdel"
+													style="font-size: 12pt; color: gray; margin-left: 10pt; cursor: pointer;"></span>
+													
+													<span class="glyphicon glyphicon-pencil" idx="<%=adto.getIdx()%>" id="answerup"
 													style="font-size: 12pt; color: gray; margin-left: 10pt; cursor: pointer;"></span>
 												</td>
 											</tr>
