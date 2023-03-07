@@ -19,21 +19,31 @@
 <body>
 <%
 request.setCharacterEncoding("utf-8");
-/*
+
+//값 얻기
 String writer=request.getParameter("writer");
 String subject=request.getParameter("subject");
 String content=request.getParameter("content");
 
+//dto
 SmartDto dto=new SmartDto();
 
 dto.setWriter(writer);
 dto.setSubject(subject);
 dto.setContent(content);
 
+//dao
 SmartDao dao=new SmartDao();
 
-dao.insertSmart(dto);*/
+//insert
+dao.insertSmart(dto);
 
+//방금 추가된 num값 얻기
+int num=dao.getMaxNum();
+
+response.sendRedirect("../index.jsp?main=board/detailview.jsp?num="+num+"&currentPage="+1);
+
+/* 
 //이미지가 업로드되는 실제경로
 	String realPath=getServletContext().getRealPath("/save");
 	System.out.println(realPath);
@@ -68,7 +78,7 @@ dao.insertSmart(dto);*/
 		
 	}catch(Exception e){
 		System.out.println("업로드 오류"+e.getMessage());
-	}
+	}*/
 
 
 %>

@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Vector;
 
+import org.apache.tomcat.jni.OS;
+
 import data.dto.AnswerDto;
 import data.dto.GuestDto;
 import data.dto.SmartDto;
@@ -191,6 +193,109 @@ public class SmartDao {
 		return dto;
 	}
 	
+	//추천수 증가
+	public void updateReadCount(String num)
+	{
+		Connection conn=db.getConnection();
+		PreparedStatement pstmt=null;
+		
+		String sql="update smartboard set readcount=readcount+1 where num=?";
+		
+		try {
+			pstmt=conn.prepareStatement(sql);
+			
+			pstmt.setString(1, num);
+			
+			pstmt.execute();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.Dbclose(conn, pstmt);
+		}
+	}
+	
+	//maxnum구하기(가장 최근에 추가된 글의 num값을 얻기)
+	public int getMaxNum()
+	{
+		int max=0;
+		
+		Connection conn=db.getConnection();
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		
+		String sql="select max(num) max from smartboard";
+		
+		try {
+			pstmt=conn.prepareStatement(sql);
+			rs=pstmt.executeQuery();
+			
+			if(rs.next())
+			{
+				max=rs.getInt("max");
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.Dbclose(conn, pstmt, rs);
+		}
+		
+		return max;
+	}
+	
+	//수정
+	public void updateSmart(SmartDto dto)
+	{
+		Connection conn=db.getConnection();
+		PreparedStatement pstmt=null;
+		
+		String sql="update smartboard set writer=?,subject=?,content=? where num=?";
+		
+		try {
+			pstmt=conn.prepareStatement(sql);
+			
+			pstmt.setString(1, dto.getWriter());
+			pstmt.setString(2, dto.getSubject());
+			pstmt.setString(3, dto.getContent());
+			pstmt.setString(4, dto.getNum());
+			
+			pstmt.execute();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.Dbclose(conn, pstmt);
+		}
+		
+	}
+	
+	
+	//삭제
+	public void deleteSmart(String num)
+	{
+		Connection conn=db.getConnection();
+		PreparedStatement pstmt=null;
+		
+		String sql="delete from smartboard where num=?";
+		
+		try {
+			pstmt=conn.prepareStatement(sql);
+			
+			pstmt.setString(1, num);
+			pstmt.execute();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.Dbclose(conn, pstmt);
+		}
+		
+	}
 	
 	
 	

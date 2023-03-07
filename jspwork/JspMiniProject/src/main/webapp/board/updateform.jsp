@@ -1,3 +1,5 @@
+<%@page import="data.dto.SmartDto"%>
+<%@page import="data.dao.SmartDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -10,6 +12,17 @@
 <%
 	//프로젝트의 경로
 	String root=request.getContextPath();
+
+	//num,currentPage
+	String num=request.getParameter("num");
+	String currentPage=request.getParameter("currentPage");
+	
+	//dao
+	SmartDao dao=new SmartDao();
+	
+	//dto(현재 게시판 정보)
+	SmartDto dto=dao.getData(num);
+	
 %>
 <!-- se2 폴더에서 js 파일 가져오기 -->
 <script type="text/javascript" src="<%=root%>/se2/js/HuskyEZCreator.js"
@@ -20,28 +33,31 @@
 </head>
 <body>
 <!--  enctype="multipart/form-data" -->
-<form action="board/smartaction.jsp" method="post">
+<form action="board/updateaction.jsp" method="post">
+	<input type="hidden" name="num" value="<%=num %>">
+	<input type="hidden" name="currentPage" value="<%=currentPage %>">
+
 	<table class="table table-bordered" style="width: 800px;margin-left: 100px;">
-		<caption><h3>스마트 포토 게시판</h3></caption>
+		<caption><h3>스마트 수정 게시판</h3></caption>
 		<tr>
-			<th bgcolor="orange" width="100">작성자</th>
+			<th bgcolor="lightgray" width="100">작성자</th>
 			<td>
 				<input type="text" name="writer" class="form-control"
-					required="required" style="width: 130px;">
+					required="required" style="width: 130px;" value="<%=dto.getWriter() %>">
 			</td>
 		</tr>
 		<tr>
-			<th bgcolor="orange" width="100">제  목</th>
+			<th bgcolor="lightgray" width="100">제  목</th>
 			<td>
 				<input type="text" name="subject" class="form-control"
-					required="required" style="width: 500px;">
+					required="required" style="width: 500px;" value="<%=dto.getSubject() %>">
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<textarea name="content" id="content"		
 					required="required"			
-					style="width: 100%;height: 300px;display: none;"></textarea>		
+					style="width: 100%;height: 300px;display: none;"><%=dto.getContent() %></textarea>		
 			
 			</td>
 		</tr>
@@ -49,11 +65,11 @@
 			<td colspan="2" align="center">
 				<button type="button" class="btn btn-warning"
 					style="width: 120px;"
-					onclick="submitContents(this)">DB저장</button>
+					onclick="submitContents(this)">DB수정</button>
 				
 				<button type="button" class="btn btn-warning"
 					style="width: 120px;"
-					onclick="location.href='index.jsp?main=board/boardlist.jsp'">목록</button>
+					onclick="location.href='index.jsp?main=board/boardlist.jsp?currentPage=<%=currentPage %>'">목록</button>
 			</td>
 		</tr>
 		
